@@ -34,6 +34,8 @@ namespace DiscogsClient.Internal
 
         IRestRequest GetUserIdentityRequest();
 
+        IRestRequest GetCollectionFoldersRequest(string userName);
+
         Task<T> Execute<T>(IRestRequest request, CancellationToken cancellationToken);
 
         Task<HttpStatusCode> Execute(IRestRequest request, CancellationToken cancellationToken);

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DiscogsClient
 {
-    public class DiscogsClient : IDiscogsDataBaseClient, IDiscogsUserIdentityClient
+    public class DiscogsClient : IDiscogsDataBaseClient, IDiscogsUserIdentityClient, IDiscogsCollectionClient
     {
         private readonly IDiscogsWebClient _Client;
         private DiscogsIdentity _DiscogsIdentity;
@@ -314,5 +314,17 @@ namespace DiscogsClient
             var url = (type == DiscogsImageFormatType.Normal) ? image.uri : image.uri150;
             return await _Client.SaveFile(url, path, fileName, cancellationToken);
         }
+
+        public Task<DiscogsCollectionFolders> GetCollectionFoldersAsync(string username, DiscogsPaginable paginable, CancellationToken token)
+        {
+            IRestRequest RequestBuilder() => _Client.GetCollectionFoldersRequest(username);
+            return GetPaginableAsync<DiscogsCollectionFolders>(RequestBuilder, paginable, token);
+        }
+
+        public Task<DiscogsCollectionFolders> GetCollectionFoldersAsync(string username, DiscogsPaginable paginable = null)
+        {
+            return GetCollectionFoldersAsync(username, paginable, CancellationToken.None);
+        }
+
     }
 }

@@ -19,6 +19,7 @@ namespace DiscogsClient.Internal
         private const string _ReleaseRatingByUserUrl = "releases/{releaseId}/rating/{userName}";
         private const string _CommunityReleaseRatingUrl = "releases/{releaseId}/rating";
         private const string _IdendityUrl = "oauth/identity";
+        private const string _CollectionFoldersUrl = "users/{userName}/collection/folders";
         private readonly OAuthCompleteInformation _OAuthCompleteInformation;
         private readonly TokenAuthenticationInformation _TokenAuthenticationInformation;
 
@@ -130,6 +131,11 @@ namespace DiscogsClient.Internal
                 request.AddHeader("Authorization", _TokenAuthenticationInformation.GetDiscogsSecretToken());
 
             return request;
+        }
+
+        public IRestRequest GetCollectionFoldersRequest(string userName)
+        {
+            return GetRequest(_CollectionFoldersUrl).AddUrlSegment(nameof(userName), userName.ToString());
         }
     }
 }
