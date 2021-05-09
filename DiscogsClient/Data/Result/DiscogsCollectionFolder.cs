@@ -6,6 +6,7 @@ namespace DiscogsClient.Data.Result
 {
     public class DiscogsCollectionFolder : DiscogsEntity
     {
-        public string name { get; set; }       
+        public string name { get; set; }    
+        public int id { get; set; }       
     }
 }

@@ -12,5 +12,9 @@ namespace DiscogsClient
 
         Task<DiscogsCollectionFolders> GetCollectionFoldersAsync(string username,
          DiscogsPaginable paginable, CancellationToken token);
+
+        Task<DiscogsFolderReleases> GetCollectionReleasesByFolderAsync(string username, int folderID, DiscogsPaginable paginable = null);
+
+        Task<DiscogsFolderReleases> GetCollectionReleasesByFolderAsync(string username, int folderID, DiscogsPaginable paginable, CancellationToken token);
     }
 }
