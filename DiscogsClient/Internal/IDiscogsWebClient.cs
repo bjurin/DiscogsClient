@@ -38,6 +38,8 @@ namespace DiscogsClient.Internal
 
         IRestRequest GetCollectionReleasesByFolderRequest(string userName, int folderID);
 
+        IRestRequest GetCollectionNotesByFolderAndReleaseRequest(string userName, int folderID, int releaseID, int instanceID);
+
         Task<T> Execute<T>(IRestRequest request, CancellationToken cancellationToken);
 
         Task<HttpStatusCode> Execute(IRestRequest request, CancellationToken cancellationToken);

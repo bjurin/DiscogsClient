@@ -337,5 +337,16 @@ namespace DiscogsClient
             return GetCollectionReleasesByFolderAsync(username, folderID, paginable, CancellationToken.None);
         }
 
+        public Task<DiscogsInstanceNotes> GetCollectionNotesByFolderAndReleaseAsync(string username, int folderID, int releaseID, int instanceID, DiscogsPaginable paginable, CancellationToken token)
+        {
+            IRestRequest RequestBuilder() => _Client.GetCollectionNotesByFolderAndReleaseRequest(username, folderID, releaseID, instanceID);
+            return GetPaginableAsync<DiscogsInstanceNotes>(RequestBuilder, paginable, token);
+        }
+
+        public Task<DiscogsInstanceNotes> GetCollectionNotesByFolderAndReleaseAsync(string username, int folderID, int releaseID, int instanceID, DiscogsPaginable paginable = null)
+        {
+            return GetCollectionNotesByFolderAndReleaseAsync(username, folderID, releaseID, instanceID, paginable, CancellationToken.None);
+        }
+
     }
 }

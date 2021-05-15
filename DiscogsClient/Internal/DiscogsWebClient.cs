@@ -21,6 +21,7 @@ namespace DiscogsClient.Internal
         private const string _IdendityUrl = "oauth/identity";
         private const string _CollectionFoldersUrl = "users/{userName}/collection/folders";
         private const string _CollectionReleasesByFolderUrl = "users/{userName}/collection/folders/{folderID}/releases";
+        private const string _CollectionNotesByFolderAndReleaseUrl = "users/{userName}/collection/folders/{folderID}/releases/{releaseID}/instances/{instanceID}";
         private readonly OAuthCompleteInformation _OAuthCompleteInformation;
         private readonly TokenAuthenticationInformation _TokenAuthenticationInformation;
 
@@ -30,7 +31,7 @@ namespace DiscogsClient.Internal
 
         private static TimeLimiter SharedTimeLimiter { get; }
 
-        public DiscogsWebClient(OAuthCompleteInformation oAuthCompleteInformation, string userAgent, int timeOut = 10000):
+        public DiscogsWebClient(OAuthCompleteInformation oAuthCompleteInformation, string userAgent, int timeOut = 10000) :
             base(userAgent, timeOut)
         {
             _OAuthCompleteInformation = oAuthCompleteInformation;
@@ -47,7 +48,7 @@ namespace DiscogsClient.Internal
             SharedTimeLimiter = TimeLimiter.GetFromMaxCountByInterval(60, TimeSpan.FromMinutes(1));
         }
 
-        protected override IRestClient Mature(IRestClient client) 
+        protected override IRestClient Mature(IRestClient client)
         {
             client.Authenticator = _OAuthCompleteInformation?.GetAuthenticatorForProtectedResource();
             return client;
@@ -64,11 +65,11 @@ namespace DiscogsClient.Internal
         }
 
         public IRestRequest GetReleaseRequest(int releaseId)
-        {       
+        {
             return GetRequest(_ReleaseUrl).AddUrlSegment(nameof(releaseId), releaseId.ToString());
         }
 
-        public IRestRequest GetMasterRequest(int masterId) 
+        public IRestRequest GetMasterRequest(int masterId)
         {
             return GetRequest(_MasterUrl).AddUrlSegment(nameof(masterId), masterId.ToString());
         }
@@ -78,17 +79,17 @@ namespace DiscogsClient.Internal
             return GetRequest(_MasterReleaseVersionUrl).AddUrlSegment(nameof(masterId), masterId.ToString());
         }
 
-        public IRestRequest GetArtistRequest(int artistId) 
+        public IRestRequest GetArtistRequest(int artistId)
         {
             return GetRequest(_ArtistUrl).AddUrlSegment(nameof(artistId), artistId.ToString());
         }
 
-        public IRestRequest GetLabelRequest(int labelId) 
+        public IRestRequest GetLabelRequest(int labelId)
         {
             return GetRequest(_LabeltUrl).AddUrlSegment(nameof(labelId), labelId.ToString());
         }
 
-        public IRestRequest GetArtistReleaseVersionRequest(int artistId) 
+        public IRestRequest GetArtistReleaseVersionRequest(int artistId)
         {
             return GetRequest(_ArtistReleaseUrl).AddUrlSegment(nameof(artistId), artistId.ToString());
         }
@@ -139,12 +140,21 @@ namespace DiscogsClient.Internal
             return GetRequest(_CollectionFoldersUrl).AddUrlSegment(nameof(userName), userName);
         }
 
-        public IRestRequest GetCollectionReleasesByFolderRequest(string userName,int folderID)
+        public IRestRequest GetCollectionReleasesByFolderRequest(string userName, int folderID)
         {
             return GetRequest(_CollectionReleasesByFolderUrl).
                 AddUrlSegment(nameof(userName), userName).
                 AddUrlSegment(nameof(folderID), folderID.ToString());
         }
-    
+
+        public IRestRequest GetCollectionNotesByFolderAndReleaseRequest(string userName, int folderID, int releaseID, int instanceID)
+        {
+            return GetRequest(_CollectionNotesByFolderAndReleaseUrl).
+                AddUrlSegment(nameof(userName), userName).
+                AddUrlSegment(nameof(folderID), folderID.ToString()).
+                AddUrlSegment(nameof(releaseID), releaseID.ToString()).
+                AddUrlSegment(nameof(instanceID), instanceID.ToString());
+        }
+
     }
 }
